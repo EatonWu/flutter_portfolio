@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -34,6 +34,7 @@ final _router = GoRouter(
 
 
 void main() {
+  // debugPaintSizeEnabled = true;
   usePathUrlStrategy();
   runApp(const MyApp());
 }
@@ -79,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> splashes = [];
   Timer? _timer;
   int _circleCount = 0;
-  final int _maxCircles = 100;
+  final int _maxCircles = 150;
 
   @override
   void initState() {
@@ -121,21 +122,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('signature.png'),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('signature.png'),
+            ],
           ),
-          Flexible(
-            flex: 10,
+          Expanded(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Flexible(
-                  flex: 1,
+                Expanded(
                   child: Stack(
+                    fit: StackFit.expand,
                     children: [
                       ...splashes,
                     ],

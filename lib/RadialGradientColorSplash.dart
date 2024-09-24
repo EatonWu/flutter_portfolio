@@ -42,23 +42,36 @@ class RadialGradientColorSplash extends StatelessWidget {
   Widget build(BuildContext context) {
     // Generate random size between minSize and maxSize
     var randomSize = Random().nextDouble() * (maxSize - minSize) + minSize;
-
     var middleColor = Color.lerp(startColor, endColor, 0.5) ?? Colors.white;
 
-    return Container(
-      width: randomSize,
-      height: randomSize,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: RadialGradient(
-          colors: [
-            startColor,
-            middleColor,
-            endColor,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var randomPositionTop = Random().nextDouble() * constraints.maxHeight;
+        var randomPositionLeft = Random().nextDouble() * constraints.maxWidth;
+        return Stack(
+          children: [
+            Positioned(
+              top: randomPositionTop,
+              left: randomPositionLeft,
+              child: Container(
+                width: randomSize,
+                height: randomSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      startColor,
+                      middleColor,
+                      endColor,
+                    ],
+                    stops: const [0.3, 0.7, 1.0],
+                  ),
+                ),
+              ),
+            ),
           ],
-          stops: const [0.3, 0.7, 1.0],
-        ),
-      ),
+        );
+      },
     );
   }
 }
