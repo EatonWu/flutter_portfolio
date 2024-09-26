@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
           primary: Colors.blueGrey,
           // 222223FF get color from hex
           secondary: const Color(0xFF222223),
-          surface: Colors.black87,
+          surface: const Color(0xFF222223),
         ),
       ),
       routerConfig: _router,
@@ -514,20 +514,34 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                     ],
                   )
-                      : Column(
-                    children: [
-                      Expanded(child: Container(
-                        child: Column(children: [
-                          Expanded(child: Container(
-                            child: CarouselWidget(),
-                          )),
-                          Expanded(child: const BioWidget()),
-                        ],
-                        )),
-                      ),
-                      Expanded(child: Container(child: ResumePdf()),
-                      ),
-                    ],
+                  : LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        var width = constraints.maxWidth;
+                        var height = constraints.maxHeight;
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: height,
+                                    maxWidth: width,
+                                  ),
+                                  child: CarouselWidget()),
+                              ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: height,
+                                    maxWidth: width,
+                              ), child: const BioWidget()),
+                              ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: height,
+                                    maxWidth: width,
+                                  ),
+                                  child: ResumePdf()),
+                            ],
+                          ),
+                        );
+                      }
                   ),
                 ),
               ],
@@ -553,30 +567,12 @@ class TestPage extends StatelessWidget {
 
           bool isWide = aspectRatio > 1.5;
 
-          return Column(
-            children: [
-              Image.asset('signature.png'),
-              NavTabBar(),
-              Expanded(
-                child: isWide
-                    ? Row(
-                  children: [
-                    Expanded(child: Container(color: Colors.blue)),
-                    Expanded(child: Container(
-                        child: ResumePdf()
-                    )
-                    ),
-                  ],
-                )
-                    : Column(
-                  children: [
-                    Expanded(child: Container(color: Colors.blue)),
-                    Expanded(child: Container(child: ResumePdf()),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          return SingleChildScrollView(
+            child: Row(
+              children: [
+                Expanded(child: Container(color: Colors.blue, height: 500)),
+              ]
+            ),
           );
         },
       ),
@@ -623,14 +619,11 @@ class BioWidget extends StatelessWidget {
         Flexible(
           child: Padding(
             padding: EdgeInsets.all(8.0),
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: Text("Hi! Above are images of some things that I've done.\n"
-                  "I'm an alumnus of the Rochester Institute of Technology (2024 with a Bachelors of Science in Computer Science).\n"
-                  "My primary interests are embedded systems, web development, and machine learning.\n"
-                  "You can find some of my projects under active development below.",
-                textAlign: TextAlign.center,
-              ),
+            child: Text("Hi! Above are images of some things that I've done.\n"
+                "I'm an alumnus of the Rochester Institute of Technology (2024 with a Bachelors of Science in Computer Science).\n"
+                "My primary interests are embedded systems, web development, and machine learning.\n"
+                "You can find some of my projects under active development below.",
+              textAlign: TextAlign.center,
             ),
           ),
         ),

@@ -24,68 +24,34 @@ class CarouselWidget extends StatefulWidget {
 class _CarouselWidgetState extends State<CarouselWidget>{
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CarouselSlider(
-              carouselController: widget.controller,
-              options: CarouselOptions(
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    widget.currentImageIndex = index;
-                  });
-                },
-                height: 500.0,
-                aspectRatio: 16/9,
-                viewportFraction: 0.8,
-                initialPage: widget.currentImageIndex,
-                enableInfiniteScroll: true,
-                reverse: false,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                autoPlayCurve: Curves.easeIn,
-                enlargeCenterPage: true,
-                scrollDirection: Axis.horizontal,
+    return CarouselSlider(
+      carouselController: widget.controller,
+      options: CarouselOptions(
+        onPageChanged: (index, reason) {
+          setState(() {
+            widget.currentImageIndex = index;
+          });
+        },
+        height: 500.0,
+        aspectRatio: 16/9,
+        viewportFraction: 0.8,
+        initialPage: widget.currentImageIndex,
+        enableInfiniteScroll: true,
+        reverse: false,
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 3),
+        autoPlayAnimationDuration: Duration(milliseconds: 800),
+        autoPlayCurve: Curves.easeIn,
+        enlargeCenterPage: true,
+        scrollDirection: Axis.horizontal,
 
-              ), items: [
-                LabeledCarouselitem(Image.asset('sexydude;).png'), 'Me in a nice snowy field on the RIT campus'),
-                LabeledCarouselitem(Image.asset('assets/ukg.png'), 'My first internship, at UKG. Worked on the Kafka team, and learned a lot!'),
-                LabeledCarouselitem(Image.asset('assets/luncheon.jpg'), 'Exit lunch with other interns at Persistent Systems, LLC. Working with these people was a lot of fun!'),
-                LabeledCarouselitem(Image.asset('assets/radio.jpg'), 'One of the radios I worked on during my time at Persistent'),
-                LabeledCarouselitem(Image.asset('assets/wiring_diagram.png'), 'Wonky little wiring diagram I made for the power switch test board for RIT\'s Electric Vehicle team'),
-            ],
-            ),
-          ),
-        ),
-        // pause button (returns a null for some reason?)
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     ElevatedButton(
-        //       onPressed: () {
-        //         setState(() {
-        //           widget.isPaused = !widget.isPaused;
-        //           if (widget.isPaused) {
-        //             widget.controller.stopAutoPlay();
-        //           } else {
-        //             widget.controller.startAutoPlay();
-        //           }
-        //         });
-        //       },
-        //       child: Row(
-        //         children: [
-        //           Text(widget.isPaused ? 'Resume' : 'Pause'),
-        //           const SizedBox(width: 10),
-        //           Icon(widget.isPaused ? Icons.play_arrow : Icons.pause),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
-      ],
+      ), items: [
+        LabeledCarouselitem(Image.asset('sexydude;).png'), 'Me in a nice snowy field on the RIT campus'),
+        LabeledCarouselitem(Image.asset('assets/ukg.png'), 'My first internship, at UKG. Worked on the Kafka team, and learned a lot!'),
+        LabeledCarouselitem(Image.asset('assets/luncheon.jpg'), 'Exit lunch with other interns at Persistent Systems, LLC. Working with these people was a lot of fun!'),
+        LabeledCarouselitem(Image.asset('assets/radio.jpg'), 'One of the radios I worked on during my time at Persistent'),
+        LabeledCarouselitem(Image.asset('assets/wiring_diagram.png'), 'Wonky little wiring diagram I made for the power switch test board for RIT\'s Electric Vehicle team'),
+    ],
     );
   }
 }
