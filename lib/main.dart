@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> splashes = [];
   Timer? _timer;
   int _circleCount = 0;
-  final int _maxCircles = 100;
+  final int _maxCircles = 200;
 
   @override
   void initState() {
@@ -495,30 +495,15 @@ class _AboutPageState extends State<AboutPage> {
                             )),
                             LayoutBuilder(
                               builder: (context, constraints) {
-                                return Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Flexible(child: Container(width: constraints.maxWidth / 2, height: 1, color: primaryColor)),
-                                    ],
-                                  ),
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Flexible(child: Container(width: constraints.maxWidth / 2, height: 1, color: primaryColor)),
+                                  ],
                                 );
                               },
                             ),
-                            Expanded(child: Container( // bio text
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("Hi!\ntest",
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                            )),
+                            const Expanded(child: BioWidget()),
                           ],
                         ))
                       ),
@@ -536,7 +521,7 @@ class _AboutPageState extends State<AboutPage> {
                           Expanded(child: Container(
                             child: CarouselWidget(),
                           )),
-                          Expanded(child: Container(color: Colors.red)),
+                          Expanded(child: const BioWidget()),
                         ],
                         )),
                       ),
@@ -595,6 +580,78 @@ class TestPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class IconLabelElevatedButton extends StatelessWidget {
+  const IconLabelElevatedButton({super.key, required this.icon, required this.label, required this.link});
+
+  final IconData icon;
+  final String label;
+  final String link;
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        Uri url = Uri.parse(link);
+        // open github
+        if (!await launchUrl(url, webOnlyWindowName: '_blank')) {
+          throw 'Could not launch $url';
+        }
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon),
+          Text(label),
+        ],
+      ),
+    );
+  }
+}
+
+class BioWidget extends StatelessWidget {
+  const BioWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Flexible(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Text("Hi! Above are images of some things that I've done.\n"
+                  "I'm an alumnus of the Rochester Institute of Technology (2024 with a Bachelors of Science in Computer Science).\n"
+                  "My primary interests are embedded systems, web development, and machine learning.\n"
+                  "You can find some of my projects under active development below.",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              Flexible(
+                child: IconLabelElevatedButton(icon: Icons.code, label: ' Company search/apply', link: 'https://github.com/EatonWu/search_and_apply')),
+              Flexible(child: Padding(padding: const EdgeInsets.all(4.0),),),
+              Flexible(
+                child: IconLabelElevatedButton(icon: Icons.code, label: ' Machine learning in Rust', link: 'https://github.com/EatonWu/RustML')),
+              Flexible(child: Padding(padding: const EdgeInsets.all(4.0),),),
+              Flexible(
+                child: IconLabelElevatedButton(icon: Icons.code, label: ' Open source algorithmic trading backtesting crate', link: 'https://github.com/EatonWu/free-quant')),
+              Flexible(child: Padding(padding: const EdgeInsets.all(4.0),),),
+              Flexible(
+                child: IconLabelElevatedButton(icon: Icons.code, label: ' This website, developed using flutter :)', link: 'https://github.com/EatonWu/flutter_portfolio')),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

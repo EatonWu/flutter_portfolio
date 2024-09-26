@@ -55,7 +55,7 @@ class _ResumePdfState extends State<ResumePdf> {
             icon: Icon(Icons.download),  // Example action (e.g., Share button)
             onPressed: () {
               if (kIsWeb) {
-                window.open('EatonWuResume.pdf', 'EatonWuResume.pdf');
+                _downloadAsset('EatonWuResume.pdf', 'EatonWuResume.pdf');
               }
             },
             tooltip: 'Download Resume',

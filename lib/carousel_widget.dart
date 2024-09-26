@@ -51,7 +51,7 @@ class _CarouselWidgetState extends State<CarouselWidget>{
                 scrollDirection: Axis.horizontal,
 
               ), items: [
-                LabeledCarouselitem(Image.asset('sexydude;).png'), 'Me in a nice snowy field'),
+                LabeledCarouselitem(Image.asset('sexydude;).png'), 'Me in a nice snowy field on the RIT campus'),
                 LabeledCarouselitem(Image.asset('assets/ukg.png'), 'My first internship, at UKG. Worked on the Kafka team, and learned a lot!'),
                 LabeledCarouselitem(Image.asset('assets/luncheon.jpg'), 'Exit lunch with other interns at Persistent Systems, LLC. Working with these people was a lot of fun!'),
                 LabeledCarouselitem(Image.asset('assets/radio.jpg'), 'One of the radios I worked on during my time at Persistent'),
