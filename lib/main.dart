@@ -1,10 +1,18 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:portfolio_site/RadialGradientColorSplash.dart';
+import 'package:portfolio_site/resume_pdf_viewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
+import 'package:pdfx/pdfx.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'carousel_widget.dart';
 
 final _router = GoRouter(
   initialLocation: '/home',
@@ -25,17 +33,35 @@ final _router = GoRouter(
       path: '/about',
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
-        child: const AboutPage(title: 'About Page')
+        child: AboutPage(title: 'About Page')
       ),
     ),
     GoRoute(
       name: 'demos',
       path: '/demos',
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'cgg',
+          name: 'demo',
+          pageBuilder: (context, state) => NoTransitionPage<void>(
+            key: state.pageKey,
+            child: const DemoPage(title: 'CGG Demo')
+          ),
+        ),
+      ],
       pageBuilder: (context, state) => NoTransitionPage<void>(
         key: state.pageKey,
         child: const DemoPage(title: 'Demos')
       ),
-    )
+    ),
+    GoRoute(
+      name: 'test',
+      path: '/test',
+      pageBuilder: (context, state) => NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const TestPage()
+      ),
+    ),
   ],
 );
 
@@ -59,6 +85,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme.dark().copyWith(
           primary: Colors.blueGrey,
+          // 222223FF get color from hex
+          secondary: const Color(0xFF222223),
           surface: Colors.black87,
         ),
       ),
@@ -89,12 +117,12 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> splashes = [];
   Timer? _timer;
   int _circleCount = 0;
-  final int _maxCircles = 150;
+  final int _maxCircles = 100;
 
   @override
   void initState() {
-    // random value between 250 and 1000
-    var randomDuration = Random().nextInt(750) + 250;
+    // random value between 50 and 500
+    var randomDuration = 30;
     super.initState();
     _timer = Timer.periodic(Duration(milliseconds: randomDuration), (timer) {
       if (_circleCount < _maxCircles) {
@@ -108,26 +136,47 @@ class _MyHomePageState extends State<MyHomePage> {
                   randomColor2
               )
           );
-          randomDuration = Random().nextInt(750) + 250;
+          // cancel timer and start new timer with new random duration
+          randomDuration = 30;
           _circleCount++;
+
+          _timer?.cancel();
+          _timer = Timer.periodic(Duration(milliseconds: randomDuration), (timer) {
+            if (_circleCount < _maxCircles) {
+              setState(() {
+                var randomListOfColors = generateRandomListOfColors(30);
+                var randomColor1 = randomListOfColors[Random().nextInt(randomListOfColors.length)];
+                var randomColor2 = randomListOfColors[Random().nextInt(randomListOfColors.length)];
+                splashes.add(
+                    radialGradientColorSplash(
+                        randomColor1,
+                        randomColor2
+                    )
+                );
+                _circleCount++;
+              });
+            } else {
+              _timer?.cancel();
+            }
+          });
         });
       } else {
         _timer?.cancel();
       }
     });
 
-    for (var i = 0; i < 50; i++) {
-      var randomListOfColors = generateRandomListOfColors(30);
-      var randomColor1 = randomListOfColors[Random().nextInt(randomListOfColors.length)];
-      var randomColor2 = randomListOfColors[Random().nextInt(randomListOfColors.length)];
-      splashes.add(
-          radialGradientColorSplash(
-              randomColor1,
-              randomColor2
-          )
-      );
-      _circleCount++;
-    }
+    // for (var i = 0; i < 75; i++) {
+    //   var randomListOfColors = generateRandomListOfColors(30);
+    //   var randomColor1 = randomListOfColors[Random().nextInt(randomListOfColors.length)];
+    //   var randomColor2 = randomListOfColors[Random().nextInt(randomListOfColors.length)];
+    //   splashes.add(
+    //       radialGradientColorSplash(
+    //           randomColor1,
+    //           randomColor2
+    //       )
+    //   );
+    //   _circleCount++;
+    // }
   }
 
   @override
@@ -185,74 +234,106 @@ class HomePageMainContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var backgroundColor = Theme.of(context).colorScheme.secondary;
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('signature.png'),
-          ],
+        Flexible(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('signature.png'),
+            ],
+          ),
         ),
-        NavTabBar(),
-        Expanded(
+        const Flexible(child: NavTabBar()),
+        Flexible(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               // circle buttons with github, linkedin, and email
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text("Welcome!",
-                          style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: 96,
-                          )
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text("Welcome!",
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 96,
+                            )
+                        ),
                       ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // open github
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.code),
-                        Text(' GitHub'),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // open linkedin
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(Icons.person),
-                          Text(' LinkedIn'),
-                        ],
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Uri url = Uri.parse("https://www.github.com/EatonWu");
+                          // open github
+                          if (!await launchUrl(url, webOnlyWindowName: '_blank')) {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(Icons.code),
+                            Text(' GitHub'),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // open email
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.email),
-                        Text(' Email'),
-                      ],
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Uri url = Uri.parse("https://www.linkedin.com/in/eaton-wu/");
+                            if (!await launchUrl(url, webOnlyWindowName: '_blank')) {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.person),
+                              Text(' LinkedIn'),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          // Uri url = Uri.parse("mailto:eatonwu100@hotmail.com");
+                          // if (!await launchUrl(url, webOnlyWindowName: '_blank')) {
+                          //   throw 'Could not launch $url';
+                          // }
+                          await Clipboard.setData(const ClipboardData(text: "eatonwu100@hotmail.com"));
+                          Fluttertoast.showToast(msg: "Email copied to clipboard",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.SNACKBAR,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: backgroundColor,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                              webPosition: 'center'); // bottom-center
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(Icons.email),
+                            Text(' Email'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-
             ],
           ),
         )
@@ -262,9 +343,7 @@ class HomePageMainContent extends StatelessWidget {
 }
 
 class NavTabBar extends StatefulWidget {
-  int selectedIndex = 0;
-  int size = 3;
-  NavTabBar({super.key});
+  const NavTabBar({super.key});
   @override
   State<NavTabBar> createState() => _NavTabBarState();
 }
@@ -363,26 +442,158 @@ class ErrorPage extends StatelessWidget {
   }
 }
 
-class AboutPage extends StatelessWidget {
-  const AboutPage({super.key, required this.title});
+class AboutPage extends StatefulWidget {
+  AboutPage({super.key, required this.title});
 
+  final pdfPinchController = PdfControllerPinch(
+    document: PdfDocument.openAsset('EatonWuResume.pdf'),
+
+  );
   final String title;
 
   @override
+  State<AboutPage> createState() => _AboutPageState();
+}
+
+class _AboutPageState extends State<AboutPage> {
+
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Color primaryColor = Theme.of(context).colorScheme.primary;
     return Title(
-      title: title,
+      title: widget.title,
       color: Theme.of(context).colorScheme.primary,
       child: Scaffold(
-        body: Column(
-          children: [
-            Image.asset('signature.png'),
-            NavTabBar(),
-            const Center(
-              child: Text('About Page'),
-            ),
-          ],
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            double aspectRatio = constraints.maxWidth / constraints.maxHeight;
+
+            bool isWide = aspectRatio > 1.5;
+
+            return Column(
+              children: [
+                Image.asset('signature.png'),
+                NavTabBar(),
+                Expanded(
+                  child: isWide
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child:
+                        Container(child:
+                          Column(children: [
+                            Expanded(child:
+                              Container(
+                                child: CarouselWidget(),
+                            )),
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                return Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Flexible(child: Container(width: constraints.maxWidth / 2, height: 1, color: primaryColor)),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            Expanded(child: Container( // bio text
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text("Hi!\ntest",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            )),
+                          ],
+                        ))
+                      ),
+                      Expanded(child:
+                        Container(
+                          child: ResumePdf()
+                        )
+                      ),
+                    ],
+                  )
+                      : Column(
+                    children: [
+                      Expanded(child: Container(
+                        child: Column(children: [
+                          Expanded(child: Container(
+                            child: CarouselWidget(),
+                          )),
+                          Expanded(child: Container(color: Colors.red)),
+                        ],
+                        )),
+                      ),
+                      Expanded(child: Container(child: ResumePdf()),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
+      ),
+    );
+  }
+}
+
+
+
+class TestPage extends StatelessWidget {
+  const TestPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double aspectRatio = constraints.maxWidth / constraints.maxHeight;
+
+          bool isWide = aspectRatio > 1.5;
+
+          return Column(
+            children: [
+              Image.asset('signature.png'),
+              NavTabBar(),
+              Expanded(
+                child: isWide
+                    ? Row(
+                  children: [
+                    Expanded(child: Container(color: Colors.blue)),
+                    Expanded(child: Container(
+                        child: ResumePdf()
+                    )
+                    ),
+                  ],
+                )
+                    : Column(
+                  children: [
+                    Expanded(child: Container(color: Colors.blue)),
+                    Expanded(child: Container(child: ResumePdf()),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

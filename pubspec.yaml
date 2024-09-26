@@ -32,7 +32,11 @@ dependencies:
     sdk: flutter
 
   go_router: ^14.2.7
-
+  url_launcher: ^6.3.0
+  pdfx: ^2.8.0
+  pdfrx: ^1.0.84
+  fluttertoast: ^8.2.8
+  carousel_slider: ^5.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -62,6 +66,11 @@ flutter:
 
   assets:
     - assets/signature.png
+    - assets/EatonWuResume.pdf
+    - assets/luncheon.jpg
+    - assets/radio.jpg
+    - assets/wiring_diagram.png
+    - assets/ukg.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
