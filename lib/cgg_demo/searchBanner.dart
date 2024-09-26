@@ -1,6 +1,6 @@
-import 'package:chargergogo/main.dart';
+import 'package:portfolio_site/cgg_demo/main.dart';
 import 'package:flutter/material.dart';
-import 'package:chargergogo/locations.dart' as locations;
+import 'package:portfolio_site/cgg_demo/locations.dart' as locations;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -11,6 +11,7 @@ import 'package:flutter_sliding_box/flutter_sliding_box.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:portfolio_site/cgg_demo/search.dart';
 
 
 class ShopBanner extends StatefulWidget {
@@ -48,7 +49,7 @@ class _ShopBannerDisplayState extends State<_ShopBannerDisplay> {
     //   'assets/default_background.jpg',
     // );
     return Image.asset(
-        "default_background.jpg",
+        "assets/cgg_demo_assets/default_background.jpg",
         height: 150,
         fit: BoxFit.fill,
     );
@@ -488,11 +489,11 @@ class DisplayTypeWidget extends StatelessWidget {
       return Image.network(displayTypeToUrl[displayType]!,
           fit: BoxFit.contain,
           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return Image.asset("default_c8.png");
+            return Image.asset("assets/cgg_demo_assets/default_c8.png");
           }
       );
     } else {
-      return Image.asset("default_c8.png");
+      return Image.asset("assets/cgg_demo_assets/default_c8.png");
     }
   }
 

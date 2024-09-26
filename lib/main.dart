@@ -13,6 +13,7 @@ import 'package:pdfx/pdfx.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'carousel_widget.dart';
+import 'cgg_demo/main.dart';
 
 final _router = GoRouter(
   initialLocation: '/home',
@@ -42,10 +43,10 @@ final _router = GoRouter(
       routes: <RouteBase>[
         GoRoute(
           path: 'cgg',
-          name: 'demo',
+          name: 'cgg',
           pageBuilder: (context, state) => NoTransitionPage<void>(
             key: state.pageKey,
-            child: const DemoPage(title: 'CGG Demo')
+            child: const CggDemoPage()
           ),
         ),
       ],
@@ -529,7 +530,7 @@ class _AboutPageState extends State<AboutPage> {
                                   child: CarouselWidget()),
                               ConstrainedBox(
                                   constraints: BoxConstraints(
-                                    maxHeight: height,
+                                    maxHeight: 300,
                                     maxWidth: width,
                               ), child: const BioWidget()),
                               ConstrainedBox(
@@ -588,20 +589,23 @@ class IconLabelElevatedButton extends StatelessWidget {
   final String link;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
-        Uri url = Uri.parse(link);
-        // open github
-        if (!await launchUrl(url, webOnlyWindowName: '_blank')) {
-          throw 'Could not launch $url';
-        }
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon),
-          Text(label),
-        ],
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: ElevatedButton(
+        onPressed: () async {
+          Uri url = Uri.parse(link);
+          // open github
+          if (!await launchUrl(url, webOnlyWindowName: '_blank')) {
+            throw 'Could not launch $url';
+          }
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon),
+            FittedBox(child: Text(label)),
+          ],
+        ),
       ),
     );
   }
@@ -641,6 +645,7 @@ class BioWidget extends StatelessWidget {
               Flexible(child: Padding(padding: const EdgeInsets.all(4.0),),),
               Flexible(
                 child: IconLabelElevatedButton(icon: Icons.code, label: ' This website, developed using flutter :)', link: 'https://github.com/EatonWu/flutter_portfolio')),
+              Flexible(child: Padding(padding: const EdgeInsets.all(4.0),),),
             ],
           ),
         ),
@@ -664,11 +669,32 @@ class DemoPage extends StatelessWidget {
           children: [
             Image.asset('signature.png'),
             NavTabBar(),
-            const Center(
-              child: Text('Demo Page'),
+            // add button that says "go to cgg demo"
+            ElevatedButton(
+              onPressed: () {
+                _router.go('/demos/cgg');
+              },
+              child: const Text('CGG Demo'),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CggDemoPage extends StatelessWidget {
+  const CggDemoPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Image.asset('signature.png'),
+          NavTabBar(),
+          const Expanded(child: CggApp()),
+        ],
       ),
     );
   }

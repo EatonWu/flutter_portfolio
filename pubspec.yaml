@@ -1,5 +1,5 @@
 name: portfolio_site
-description: "Eaton Wu Portfolio site"
+description: "Eaton Wu Portfolio"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -37,6 +37,13 @@ dependencies:
   pdfrx: ^1.0.84
   fluttertoast: ^8.2.8
   carousel_slider: ^5.0.0
+  google_maps_flutter: ^2.0.6
+  http: ^1.2.2
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
+  geolocator: ^13.0.1
+  flutter_sliding_box: ^1.1.5
+  modal_bottom_sheet: ^3.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -71,6 +78,13 @@ flutter:
     - assets/radio.jpg
     - assets/wiring_diagram.png
     - assets/ukg.png
+    - assets/cgg_demo_assets/cgg_logo.png
+    - assets/cgg_demo_assets/default_background.jpg
+    - assets/cgg_demo_assets/default_c8.png
+    - assets/cgg_demo_assets/locations.json
+    - assets/cgg_demo_assets/shops.json
+    - assets/cgg_demo_assets/transparent_cgg_logo.png
+    - assets/sexydude;).png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

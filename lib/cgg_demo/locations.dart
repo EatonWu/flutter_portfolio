@@ -100,7 +100,7 @@ Future<Locations> getGoogleOffices() async {
   // Fallback for when the above HTTP request fails.
   return Locations.fromJson(
     json.decode(
-      await rootBundle.loadString('assets/locations.json'),
+      await rootBundle.loadString('assets/cgg_demo_assets/locations.json'),
     ) as Map<String, dynamic>,
   );
 }
@@ -319,7 +319,7 @@ Future<CGGShops> getCGGShops() async {
   // Fallback for when the above HTTP request fails.
   return CGGShops.fromJson(
     json.decode(
-      await rootBundle.loadString('shops.json'),
+      await rootBundle.loadString('assets/cgg_demo_assets/shops.json'),
     ) as Map<String, dynamic>,
   );
 }

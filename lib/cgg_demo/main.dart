@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sliding_box/flutter_sliding_box.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/rendering.dart';
-import 'package:chargergogo/locations.dart' as locations;
-import 'package:chargergogo/search.dart' as search_bar;
-import 'package:chargergogo/searchBanner.dart' as searchBanner;
+import 'package:portfolio_site/cgg_demo/locations.dart' as locations;
+import 'package:portfolio_site/cgg_demo/search.dart' as search_bar;
+import 'package:portfolio_site/cgg_demo/searchBanner.dart' as searchBanner;
 import 'package:flutter/widgets.dart';
 
 void main() {
   debugPaintSizeEnabled = false;
-  runApp(const MyApp());
+  runApp(const CggApp());
 }
 
 List<TimeOfDay>? parseTimeRange(String timeRange) {
@@ -132,11 +132,11 @@ bool nowInTimeRange(String timeRange) {
   return true;
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class CggApp extends StatefulWidget {
+  const CggApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<CggApp> createState() => _CggAppState();
 }
 
 class googleMapZoomScrollController with ChangeNotifier {
@@ -201,7 +201,7 @@ class ShopBannerController with ChangeNotifier {
   }
 }
 
-class _MyAppState extends State<MyApp> {
+class _CggAppState extends State<CggApp> {
   GoogleMapController? mapController;
   ShopBannerController shopBannerController = ShopBannerController();
   BoxController boxController = BoxController();
@@ -231,10 +231,10 @@ class _MyAppState extends State<MyApp> {
     final cggShops = await locations.getCGGShops();
 
     var icon = await BitmapDescriptor.asset(
-        const ImageConfiguration(size: Size(60, 60)), 'cgg_logo.png');
+        const ImageConfiguration(size: Size(60, 60)), 'assets/cgg_demo_assets/cgg_logo.png');
 
     var transparent_icon = await BitmapDescriptor.asset(
-        const ImageConfiguration(size: Size(60, 60)), 'transparent_cgg_logo.png');
+        const ImageConfiguration(size: Size(60, 60)), 'assets/cgg_demo_assets/transparent_cgg_logo.png');
 
     setState(() {
       _allMarkers.clear();
@@ -297,10 +297,6 @@ class _MyAppState extends State<MyApp> {
         colorSchemeSeed: Colors.green[700],
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Chargergogo Demo App'),
-          elevation: 2,
-        ),
         body: cggMapPage(),
       ),
     );
@@ -312,6 +308,7 @@ class _MyAppState extends State<MyApp> {
     return Stack(
       children: [
         GoogleMap(
+          webGestureHandling: WebGestureHandling.greedy,
           scrollGesturesEnabled: !searchIsOpen && !bannerIsOpen,
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(

@@ -1,7 +1,7 @@
 
-import 'package:chargergogo/main.dart';
+import 'package:portfolio_site/cgg_demo/main.dart';
 import 'package:flutter/material.dart';
-import 'package:chargergogo/locations.dart' as locations;
+import 'package:portfolio_site/cgg_demo/locations.dart' as locations;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
