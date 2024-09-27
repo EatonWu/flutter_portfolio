@@ -49,7 +49,7 @@ class _ShopBannerDisplayState extends State<_ShopBannerDisplay> {
     //   'assets/default_background.jpg',
     // );
     return Image.asset(
-        "assets/cgg_demo_assets/default_background.jpg",
+        "assets/assets/cgg_demo_assets/default_background.jpg",
         height: 150,
         fit: BoxFit.fill,
     );
@@ -489,11 +489,11 @@ class DisplayTypeWidget extends StatelessWidget {
       return Image.network(displayTypeToUrl[displayType]!,
           fit: BoxFit.contain,
           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return Image.asset("assets/cgg_demo_assets/default_c8.png");
+            return Image.asset("assets/assets/cgg_demo_assets/default_c8.png");
           }
       );
     } else {
-      return Image.asset("assets/cgg_demo_assets/default_c8.png");
+      return Image.asset("assets/assets/cgg_demo_assets/default_c8.png");
     }
   }
 

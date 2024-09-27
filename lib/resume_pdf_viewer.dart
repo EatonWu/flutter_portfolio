@@ -55,7 +55,7 @@ class _ResumePdfState extends State<ResumePdf> {
             icon: Icon(Icons.download),  // Example action (e.g., Share button)
             onPressed: () {
               if (kIsWeb) {
-                _downloadAsset('EatonWuResume.pdf', 'EatonWuResume.pdf');
+                _downloadAsset('assets/EatonWuResume.pdf', 'EatonWuResume.pdf');
               }
             },
             tooltip: 'Download Resume',
@@ -70,7 +70,7 @@ class _ResumePdfState extends State<ResumePdf> {
       ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Center(
-          child: PdfViewer.asset('EatonWuResume.pdf',
+          child: PdfViewer.asset('assets/EatonWuResume.pdf',
             params: pdfViewerParams,
             controller: widget.controller,
           ),

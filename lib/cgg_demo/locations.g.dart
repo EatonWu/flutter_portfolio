@@ -120,6 +120,61 @@ Map<String, dynamic> _$CGGShopProfileResponseToJson(
       'msg': instance.msg,
     };
 
+CGGShopProfileResponseNoTimestamp _$CGGShopProfileResponseNoTimestampFromJson(
+        Map<String, dynamic> json) =>
+    CGGShopProfileResponseNoTimestamp(
+      ec: (json['ec'] as num).toInt(),
+      em: json['em'] as String,
+      data:
+          CggShopDataStringMode.fromJson(json['data'] as Map<String, dynamic>),
+      msg: json['msg'] as String,
+    );
+
+Map<String, dynamic> _$CGGShopProfileResponseNoTimestampToJson(
+        CGGShopProfileResponseNoTimestamp instance) =>
+    <String, dynamic>{
+      'ec': instance.ec,
+      'em': instance.em,
+      'data': instance.data,
+      'msg': instance.msg,
+    };
+
+CGGShopProfileStringMode _$CGGShopProfileStringModeFromJson(
+        Map<String, dynamic> json) =>
+    CGGShopProfileStringMode(
+      shop_id: json['shop_id'] as String,
+      shop_name: json['shop_name'] as String,
+      image_l: json['image_l'] as String,
+      address: json['address'] as String,
+      business_hours: json['business_hours'] as String,
+      open_all_day: json['open_all_day'] as bool,
+      close_all_day: json['close_all_day'] as bool,
+      lat: json['lat'] as String,
+      lng: json['lng'] as String,
+      currency: json['currency'] as String,
+      deposit: json['deposit'] as String,
+      shop_tel: json['shop_tel'] as String,
+      country_code: json['country_code'] as String,
+    );
+
+Map<String, dynamic> _$CGGShopProfileStringModeToJson(
+        CGGShopProfileStringMode instance) =>
+    <String, dynamic>{
+      'shop_id': instance.shop_id,
+      'shop_name': instance.shop_name,
+      'image_l': instance.image_l,
+      'address': instance.address,
+      'business_hours': instance.business_hours,
+      'open_all_day': instance.open_all_day,
+      'close_all_day': instance.close_all_day,
+      'lat': instance.lat,
+      'lng': instance.lng,
+      'currency': instance.currency,
+      'deposit': instance.deposit,
+      'shop_tel': instance.shop_tel,
+      'country_code': instance.country_code,
+    };
+
 CGGShopSlots _$CGGShopSlotsFromJson(Map<String, dynamic> json) => CGGShopSlots(
       on: (json['on'] as num).toInt(),
       off: (json['off'] as num).toInt(),
@@ -150,6 +205,29 @@ Map<String, dynamic> _$CggShopDataToJson(CggShopData instance) =>
       'available': instance.available,
     };
 
+CggShopDataStringMode _$CggShopDataStringModeFromJson(
+        Map<String, dynamic> json) =>
+    CggShopDataStringMode(
+      profile: CGGShopProfileStringMode.fromJson(
+          json['profile'] as Map<String, dynamic>),
+      pricing_str: (json['pricing_str'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      display_type: json['display_type'] as String,
+      slots: CGGShopSlots.fromJson(json['slots'] as Map<String, dynamic>),
+      available: json['available'] as bool,
+    );
+
+Map<String, dynamic> _$CggShopDataStringModeToJson(
+        CggShopDataStringMode instance) =>
+    <String, dynamic>{
+      'profile': instance.profile,
+      'pricing_str': instance.pricing_str,
+      'display_type': instance.display_type,
+      'slots': instance.slots,
+      'available': instance.available,
+    };
+
 CGGShop _$CGGShopFromJson(Map<String, dynamic> json) => CGGShop(
       id: json['id'] as String,
       lat: (json['lat'] as num).toDouble(),
@@ -158,6 +236,22 @@ CGGShop _$CGGShopFromJson(Map<String, dynamic> json) => CGGShop(
     );
 
 Map<String, dynamic> _$CGGShopToJson(CGGShop instance) => <String, dynamic>{
+      'id': instance.id,
+      'lat': instance.lat,
+      'lng': instance.lng,
+      'business_hours': instance.business_hours,
+    };
+
+CGGShopStringMode _$CGGShopStringModeFromJson(Map<String, dynamic> json) =>
+    CGGShopStringMode(
+      id: json['id'] as String,
+      lat: json['lat'] as String,
+      lng: json['lng'] as String,
+      business_hours: json['business_hours'] as String,
+    );
+
+Map<String, dynamic> _$CGGShopStringModeToJson(CGGShopStringMode instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'lat': instance.lat,
       'lng': instance.lng,
@@ -173,6 +267,38 @@ CGGShops _$CGGShopsFromJson(Map<String, dynamic> json) => CGGShops(
 
 Map<String, dynamic> _$CGGShopsToJson(CGGShops instance) => <String, dynamic>{
       'shops': instance.shops,
+    };
+
+CGGShopsStringMode _$CGGShopsStringModeFromJson(Map<String, dynamic> json) =>
+    CGGShopsStringMode(
+      shops: (json['shops'] as List<dynamic>?)
+              ?.map(
+                  (e) => CGGShopStringMode.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <CGGShopStringMode>[],
+    );
+
+Map<String, dynamic> _$CGGShopsStringModeToJson(CGGShopsStringMode instance) =>
+    <String, dynamic>{
+      'shops': instance.shops,
+    };
+
+GetShopListApiResponseNoTimestamp _$GetShopListApiResponseNoTimestampFromJson(
+        Map<String, dynamic> json) =>
+    GetShopListApiResponseNoTimestamp(
+      ec: (json['ec'] as num).toInt(),
+      em: json['em'] as String,
+      msg: json['msg'] as String,
+      data: CGGShopsStringMode.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$GetShopListApiResponseNoTimestampToJson(
+        GetShopListApiResponseNoTimestamp instance) =>
+    <String, dynamic>{
+      'ec': instance.ec,
+      'em': instance.em,
+      'msg': instance.msg,
+      'data': instance.data,
     };
 
 GetShoplistAPIResponse _$GetShoplistAPIResponseFromJson(

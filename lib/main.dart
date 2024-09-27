@@ -242,7 +242,7 @@ class HomePageMainContent extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('signature.png'),
+              Image.asset('assets/signature.png'),
             ],
           ),
         ),
@@ -412,7 +412,7 @@ class ErrorPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Image.asset('signature.png'),
+          Image.asset('assets/signature.png'),
           NavTabBar(),
           const Flexible(
             child: Center(
@@ -447,7 +447,7 @@ class AboutPage extends StatefulWidget {
   AboutPage({super.key, required this.title});
 
   final pdfPinchController = PdfControllerPinch(
-    document: PdfDocument.openAsset('EatonWuResume.pdf'),
+    document: PdfDocument.openAsset('assets/EatonWuResume.pdf'),
 
   );
   final String title;
@@ -480,7 +480,7 @@ class _AboutPageState extends State<AboutPage> {
 
             return Column(
               children: [
-                Image.asset('signature.png'),
+                Image.asset('assets/signature.png'),
                 NavTabBar(),
                 Expanded(
                   child: isWide
@@ -667,7 +667,7 @@ class DemoPage extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            Image.asset('signature.png'),
+            Image.asset('assets/signature.png'),
             NavTabBar(),
             // add button that says "go to cgg demo"
             ElevatedButton(
@@ -688,10 +688,11 @@ class CggDemoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('version 3');
     return Scaffold(
       body: Column(
         children: [
-          Image.asset('signature.png'),
+          Image.asset('assets/signature.png'),
           NavTabBar(),
           const Expanded(child: CggApp()),
         ],
