@@ -242,7 +242,7 @@ CGGShopProfile convertCGGShopProfileStringModeToCGGShopProfile(CGGShopProfileStr
     lat: double.parse(shopProfile.lat),
     lng: double.parse(shopProfile.lng),
     currency: shopProfile.currency,
-    deposit: int.parse(shopProfile.deposit),
+    deposit: double.parse(shopProfile.deposit).toInt(),
     shop_tel: shopProfile.shop_tel,
     country_code: shopProfile.country_code,
   );
